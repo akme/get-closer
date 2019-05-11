@@ -7,11 +7,8 @@ import (
 	"io"
 )
 
-type Hosts []string
-
-var HostsList Hosts
-
-func LoadHosts(path string) error {
+//LoadHosts loads hosts from file via fs or http request.
+func LoadHosts(path string) ([]string, error) {
 
 	o, err := openuri.Open(path)
 	if err != nil {
@@ -22,15 +19,15 @@ func LoadHosts(path string) error {
 	return linesFromReader(o)
 }
 
-func linesFromReader(r io.Reader) error {
+func linesFromReader(r io.Reader) ([]string, error) {
+	var hostsList []string
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		HostsList = append(HostsList, scanner.Text())
+		hostsList = append(hostsList, scanner.Text())
 	}
-	var err error
 	if err := scanner.Err(); err != nil {
-		return err
+		return nil, err
 	}
 
-	return err
+	return hostsList, nil
 }

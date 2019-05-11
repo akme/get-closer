@@ -126,13 +126,13 @@ func (m Measurements) Swap(i, j int)      { m[i], m[j] = m[j], m[i] }
 
 func startMeasurements(ccmd *cobra.Command, args []string) {
 
-	err := loaders.LoadHosts(hostsFile)
+	hostsList, err := loaders.LoadHosts(hostsFile)
 	if err != nil {
 		fmt.Println(err)
 	}
 	var MeasurementsList Measurements
 
-	for _, v := range loaders.HostsList {
+	for _, v := range hostsList {
 		MeasurementsList = append(MeasurementsList, Measurement{Host: v})
 	}
 	bar := pb.New(len(MeasurementsList))
