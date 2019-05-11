@@ -32,3 +32,4 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 
 ## License
+[GNU General Public License v3.0](https://github.com/akme/get-closer/blob/master/LICENSE)
