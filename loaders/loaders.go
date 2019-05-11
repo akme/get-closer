@@ -1,7 +1,9 @@
 package loaders
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"net/url"
 )
 
@@ -11,17 +13,15 @@ var HostsList Hosts
 
 func LoadHosts(path string) error {
 	// parse connection string
-	u, err := url.Parse(path) //(viper.GetString("backend"))
+	u, err := url.Parse(path)
 	if err != nil {
 		return err
 	}
-
-	// set backend based on connection string's scheme
 	switch u.Scheme {
 	case "file", "":
 		err = loadFromFile(u.Path) // &Filesystem{Path: u.Path}
 	case "http", "https":
-		err = loadFromHTTP(u)
+		err = loadFromHTTP(path)
 	default:
 		return fmt.Errorf(`
 Unrecognized scheme '%s'. You can visit https://github.com/nanopack/hoarder and
@@ -30,6 +30,18 @@ addition.
 `, u.Scheme)
 	}
 
-	// initialize the driver
+	return err
+}
+
+func linesFromReader(r io.Reader) error {
+	scanner := bufio.NewScanner(r)
+	for scanner.Scan() {
+		HostsList = append(HostsList, scanner.Text())
+	}
+	var err error
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
 	return err
 }

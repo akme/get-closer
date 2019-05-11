@@ -1,13 +1,16 @@
 package loaders
 
 import (
-	"fmt"
-	"net/url"
+	"net/http"
 )
 
-func loadFromHTTP(url *url.URL) error {
-	var err error
-	err = nil
-	fmt.Println(url)
+func loadFromHTTP(url string) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	err = linesFromReader(resp.Body)
+
 	return err
 }

@@ -1,7 +1,6 @@
 package loaders
 
 import (
-	"bufio"
 	"os"
 )
 
@@ -12,9 +11,6 @@ func loadFromFile(path string) error {
 	}
 	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		HostsList = append(HostsList, scanner.Text())
-	}
-	return scanner.Err()
+	err = linesFromReader(file)
+	return err
 }
