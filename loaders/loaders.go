@@ -3,8 +3,8 @@ package loaders
 import (
 	"bufio"
 	"fmt"
+	"github.com/utahta/go-openuri"
 	"io"
-	"net/url"
 )
 
 type Hosts []string
@@ -12,25 +12,14 @@ type Hosts []string
 var HostsList Hosts
 
 func LoadHosts(path string) error {
-	// parse connection string
-	u, err := url.Parse(path)
-	if err != nil {
-		return err
-	}
-	switch u.Scheme {
-	case "file", "":
-		err = loadFromFile(u.Path) // &Filesystem{Path: u.Path}
-	case "http", "https":
-		err = loadFromHTTP(path)
-	default:
-		return fmt.Errorf(`
-Unrecognized scheme '%s'. You can visit https://github.com/nanopack/hoarder and
-submit a pull request adding the scheme or you can submit an issue requesting its
-addition.
-`, u.Scheme)
-	}
 
-	return err
+	o, err := openuri.Open(path)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer o.Close()
+
+	return linesFromReader(o)
 }
 
 func linesFromReader(r io.Reader) error {
