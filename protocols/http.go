@@ -13,7 +13,7 @@ import (
 func HTTPPing(target string) time.Duration {
 	//var resp *http.Response
 	var body io.Reader
-
+	target = "http://" + target // dirty fix =(
 	req, err := http.NewRequest("GET", target, body)
 	req.Header.Set(http.CanonicalHeaderKey("User-Agent"), "get-closer")
 	if err != nil {

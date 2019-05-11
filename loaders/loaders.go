@@ -30,8 +30,11 @@ func linesFromReader(r io.Reader) ([]string, error) {
 		if s == "" || strings.HasPrefix(s, "#") {
 			continue
 		}
-
-		if strings.Contains(s, "http://") || strings.Contains(s, "https://") {
+		if strings.Contains(s, "#") {
+			sArr := strings.SplitN(s, "#", 2)
+			s = strings.TrimSpace(sArr[0])
+		}
+		if strings.HasPrefix(s, "http://") || strings.HasPrefix(s, "https://") {
 			host, err := url.Parse(s)
 			if err != nil {
 				continue

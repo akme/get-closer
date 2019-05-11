@@ -12,10 +12,11 @@ func TestLinesFromReader(t *testing.T) {
 		input io.Reader
 		want  []string
 	}{
-		"IPaddr":    {input: strings.NewReader("8.8.8.8"), want: []string{"8.8.8.8"}},
-		"http":      {input: strings.NewReader("http://host/url"), want: []string{"host"}},
-		"https":     {input: strings.NewReader("https://host/url"), want: []string{"host"}},
-		"host:port": {input: strings.NewReader("google.com:80"), want: []string{"google.com:80"}},
+		"IPaddr":       {input: strings.NewReader("8.8.8.8"), want: []string{"8.8.8.8"}},
+		"http":         {input: strings.NewReader("http://host/url"), want: []string{"host"}},
+		"https":        {input: strings.NewReader("https://host/url"), want: []string{"host"}},
+		"host:port":    {input: strings.NewReader("google.com:80"), want: []string{"google.com:80"}},
+		"commentafter": {input: strings.NewReader("google.com # some comment"), want: []string{"google.com"}},
 	}
 
 	for name, tc := range tests {

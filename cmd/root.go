@@ -8,7 +8,6 @@ import (
 	"github.com/akme/get-closer/protocols"
 
 	"net"
-	"net/url"
 	"os"
 	"time"
 
@@ -151,7 +150,6 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 			bar.Increment()
 		}
 		var duration time.Duration
-		host, err := url.Parse(v.Host)
 
 		if err != nil {
 			fmt.Println("url.Parse:", err)
@@ -160,7 +158,7 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 		if dnsWarmUp {
 			//fmt.Println("Warming up DNS")
 			//before := time.Now()
-			_, err := net.LookupHost(host.Hostname())
+			_, err := net.LookupHost(v.Host)
 			//after := time.Now()
 			if err != nil {
 				fmt.Println(err)
@@ -174,11 +172,11 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 			case "http":
 				duration = protocols.HTTPPing(v.Host)
 			case "dns":
-				duration = protocols.DNSPing(host.Hostname())
+				duration = protocols.DNSPing(v.Host)
 			case "icmp":
-				duration = protocols.ICMPPing(host.Hostname())
+				duration = protocols.ICMPPing(v.Host)
 			case "tcp":
-				duration = protocols.TCPPing(host.Hostname())
+				duration = protocols.TCPPing(v.Host)
 			default:
 			}
 
