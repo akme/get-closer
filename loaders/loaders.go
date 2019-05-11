@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/utahta/go-openuri"
 	"io"
+	"net/url"
+	"strings"
 )
 
 //LoadHosts loads hosts from file via fs or http request.
@@ -23,7 +25,21 @@ func linesFromReader(r io.Reader) ([]string, error) {
 	var hostsList []string
 	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
-		hostsList = append(hostsList, scanner.Text())
+		s := scanner.Text()
+		// if blank line or comment, skip
+		if s == "" || strings.HasPrefix(s, "#") {
+			continue
+		}
+
+		if strings.Contains(s, "http://") || strings.Contains(s, "https://") {
+			host, err := url.Parse(s)
+			if err != nil {
+				continue
+			}
+			hostsList = append(hostsList, host.Hostname())
+		} else {
+			hostsList = append(hostsList, s)
+		}
 	}
 	if err := scanner.Err(); err != nil {
 		return nil, err
