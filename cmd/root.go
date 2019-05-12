@@ -32,6 +32,7 @@ var (
 	verbose     bool
 	sslEnable   bool
 	tcpPort     int
+	delay       int
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -70,6 +71,7 @@ func init() {
 	rootCmd.PersistentFlags().IntVarP(&count, "count", "", 1, "number of tests per host")
 	rootCmd.PersistentFlags().BoolVarP(&progressBar, "progress-bar", "b", true, "show progress bar")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose mode")
+	rootCmd.PersistentFlags().IntVarP(&delay, "delay", "d", 3, "set delay between checks")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 
@@ -191,6 +193,8 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 				fmt.Println(err)
 			}
 			MeasurementsList[k].Duration = append(MeasurementsList[k].Duration, duration)
+
+			time.Sleep(time.Duration(delay) * time.Second)
 		}
 	}
 	if progressBar {
