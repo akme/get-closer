@@ -1,9 +1,9 @@
-# get-closer : find out closest hosts in terms of network latency or application performance
+# get-closer
+[![GoDoc](https://godoc.org/github.com/akme/get-closer?status.svg)](https://godoc.org/github.com/akme/get-closer) [![Build Status](https://travis-ci.org/akme/get-closer.svg?branch=master)](https://travis-ci.org/akme/get-closer) [![Go Report Card](https://goreportcard.com/badge/github.com/akme/get-closer)](https://goreportcard.com/report/github.com/akme/get-closer) [![codecov](https://codecov.io/gh/akme/get-closer/branch/master/graph/badge.svg)](https://codecov.io/gh/akme/get-closer)
+## Overview
+get-closer helps you to find out closest hosts in terms of network latency or application performance.
 
-## Overview [![GoDoc](https://godoc.org/github.com/akme/get-closer?status.svg)](https://godoc.org/github.com/akme/get-closer) [![Build Status](https://travis-ci.org/akme/get-closer.svg?branch=master)](https://travis-ci.org/akme/get-closer) [![Go Report Card](https://goreportcard.com/badge/github.com/akme/get-closer)](https://goreportcard.com/report/github.com/akme/get-closer) [![codecov](https://codecov.io/gh/akme/get-closer/branch/master/graph/badge.svg)](https://codecov.io/gh/akme/get-closer)
-
-
-Network latency affects performance, so choosing closest hosts is vital part of monitoring and optimization.
+**Warning:** project in under heavy development, feel free to open an issue
 
 ## Install
 
@@ -26,17 +26,18 @@ Available Commands:
   tcp         Measuring time for connecting to open TCP port.
 
 Flags:
-  -c, --concurrency uint    Concurrency (default 1)
-      --config string       config file (default: ~/.get-closer.yaml)
-      --count int           number of tests per host (default 1)
-      --dns-server string   use custom DNS resolver
-  -w, --dns-warm-up         warm up DNS cache before request (default true)
-  -f, --from-file string    Path to file with hosts to check
-  -h, --help                help for get-closer
-  -l, --limit uint          number of hosts to return
-  -b, --progress-bar        show progress bar (default true)
-  -t, --timeout uint        Timeout for request (default 60)
-  -v, --verbose             enable verbose mode
+  -c, --concurrency uint      concurrency (default 1)
+      --config string         config file (default: ~/.get-closer.yaml)
+      --count int             number of tests per host (default 1)
+  -d, --delay int             set delay between checks (default 3)
+  -r, --dns-resolver string   use custom DNS resolver
+  -w, --dns-warm-up           warm up DNS cache before request (default true)
+  -f, --from-file string      path to file with hosts to check
+  -h, --help                  help for get-closer
+  -l, --limit uint            number of hosts to return
+  -b, --progress-bar          show progress bar (default true)
+  -t, --timeout uint          timeout for request (default 60)
+  -v, --verbose               enable verbose mode
 
 Use "get-closer [command] --help" for more information about a command.
 ```
