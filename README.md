@@ -3,7 +3,7 @@
 ## Overview
 get-closer helps you to find out closest hosts in terms of network latency or application performance.
 
-**Warning:** project in under heavy development, feel free to open an issue
+**Warning:** project is under heavy development, feel free to open an issue
 ## Motivation
 Network services are very sensitive to latency degradation. In era of cloud computing we can get the same services from different providers that will have different locations, so network distance will differs too.  
 Choosing an optimal performing endpoint is vital part of optimization.  
