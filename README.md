@@ -4,13 +4,14 @@
 get-closer helps you to find out closest hosts in terms of network latency or application performance.
 
 **Warning:** project in under heavy development, feel free to open an issue
-
+## Motivation
+Network services are very sensitive to latency degradation. In era of cloud computing we can get the same services from different providers that will have different locations, so network distance will differs too.  
+Choosing an optimal performing endpoint is vital part of optimization.  
+We wanted an easy way to compare different endpoints in case of network latency or application performance.
 ## Install
-
 ```
 go get -u github.com/akme/get-closer
 ```
-
 ## How to use
 ```
 Find out closest hosts in terms of network latency.
@@ -43,6 +44,7 @@ Use "get-closer [command] --help" for more information about a command.
 ```
 
 ## Examples
+This repo contains hosts.txt and dnsresolvers.txt as an example of hosts file that you can use for test runs.
 ### ICMP
 ```
 get closer ping -f hosts.txt
