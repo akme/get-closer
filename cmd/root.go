@@ -108,13 +108,13 @@ func initConfig() {
 
 }
 
-//DurationSlice represents collection of measurements
-type DurationSlice []time.Duration
+//durationSlice represents collection of measurements
+type durationSlice []time.Duration
 
 //Measurement struct for storing results
 type Measurement struct {
 	Host     string
-	Duration DurationSlice
+	Duration durationSlice
 }
 
 //Measurements list
@@ -196,29 +196,27 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 
 }
 
-// NOTE: This implements the sortable interface
-func (p DurationSlice) Len() int           { return len(p) }
-func (p DurationSlice) Less(i, j int) bool { return int64(p[i]) < int64(p[j]) }
-func (p DurationSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p durationSlice) Len() int           { return len(p) }
+func (p durationSlice) Less(i, j int) bool { return int64(p[i]) < int64(p[j]) }
+func (p durationSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
-// NOTE: Wasteful Convenience Functions
-func (p DurationSlice) Min() time.Duration {
+func (p durationSlice) Min() time.Duration {
 	sort.Sort(p)
 	return p[0]
 }
-func (p DurationSlice) Max() time.Duration {
+func (p durationSlice) Max() time.Duration {
 	sort.Sort(p)
 	return p[p.Len()-1]
 }
-func (p DurationSlice) Avg() time.Duration {
+func (p durationSlice) Avg() time.Duration {
 	var avg int64
 	for i := 0; i < p.Len(); i++ {
 		avg += int64(p[i])
 	}
 	return time.Duration(avg / int64(p.Len()))
 }
-func (p DurationSlice) Std() time.Duration {
-	sqdifs := make(DurationSlice, p.Len(), p.Len())
+func (p durationSlice) Std() time.Duration {
+	sqdifs := make(durationSlice, p.Len(), p.Len())
 	avg := p.Avg()
 	var avgsqdif int64
 	for i := 0; i < p.Len(); i++ {
@@ -234,7 +232,7 @@ func sortByDuration(measurements Measurements) Measurements {
 	pl := make(Measurements, len(measurements))
 	i := 0
 	for _, v := range measurements {
-		pl[i] = Measurement{v.Host, DurationSlice{v.Duration.Avg()}}
+		pl[i] = Measurement{v.Host, durationSlice{v.Duration.Avg()}}
 		i++
 	}
 	sort.Sort(sort.Reverse(pl))
