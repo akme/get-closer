@@ -31,6 +31,7 @@ var (
 	count       int
 	verbose     bool
 	sslEnable   bool
+	tcpPort     int
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -182,7 +183,7 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 			case "icmp":
 				duration = protocols.ICMPPing(v.Host)
 			case "tcp":
-				duration = protocols.TCPPing(v.Host)
+				duration = protocols.TCPPing(v.Host, tcpPort)
 			default:
 			}
 
