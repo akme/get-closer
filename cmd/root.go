@@ -66,7 +66,7 @@ func init() {
 	rootCmd.PersistentFlags().UintVarP(&timeout, "timeout", "t", 60, "timeout for request")
 	rootCmd.PersistentFlags().UintVarP(&concurrency, "concurrency", "c", 1, "concurrency")
 	rootCmd.PersistentFlags().UintVarP(&limit, "limit", "l", 0, "number of hosts to return")
-	rootCmd.PersistentFlags().StringVarP(&dnsResolver, "dns-server", "", "", "use custom DNS resolver")
+	rootCmd.PersistentFlags().StringVarP(&dnsResolver, "dns-resolver", "r", "", "use custom DNS resolver")
 	rootCmd.PersistentFlags().BoolVarP(&dnsWarmUp, "dns-warm-up", "w", true, "warm up DNS cache before request")
 	rootCmd.PersistentFlags().IntVarP(&count, "count", "", 1, "number of tests per host")
 	rootCmd.PersistentFlags().BoolVarP(&progressBar, "progress-bar", "b", true, "show progress bar")
