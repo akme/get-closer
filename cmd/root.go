@@ -59,10 +59,10 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default: ~/.get-closer.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&hostsFile, "from-file", "f", "", "Path to file with hosts to check")
+	rootCmd.PersistentFlags().StringVarP(&hostsFile, "from-file", "f", "", "path to file with hosts to check")
 	rootCmd.MarkPersistentFlagRequired("from-file")
-	rootCmd.PersistentFlags().UintVarP(&timeout, "timeout", "t", 60, "Timeout for request")
-	rootCmd.PersistentFlags().UintVarP(&concurrency, "concurrency", "c", 1, "Concurrency")
+	rootCmd.PersistentFlags().UintVarP(&timeout, "timeout", "t", 60, "timeout for request")
+	rootCmd.PersistentFlags().UintVarP(&concurrency, "concurrency", "c", 1, "concurrency")
 	rootCmd.PersistentFlags().UintVarP(&limit, "limit", "l", 0, "number of hosts to return")
 	rootCmd.PersistentFlags().StringVarP(&dnsResolver, "dns-server", "", "", "use custom DNS resolver")
 	rootCmd.PersistentFlags().BoolVarP(&dnsWarmUp, "dns-warm-up", "w", true, "warm up DNS cache before request")
@@ -125,7 +125,6 @@ func (m Measurements) Less(i, j int) bool { return m[i].Duration.Avg() > m[j].Du
 func (m Measurements) Swap(i, j int)      { m[i], m[j] = m[j], m[i] }
 
 func startMeasurements(ccmd *cobra.Command, args []string) {
-	fmt.Println(sslEnable)
 	hostsList, err := loaders.LoadHosts(hostsFile)
 	if err != nil {
 		fmt.Println(err)
@@ -135,10 +134,12 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 	for _, v := range hostsList {
 		MeasurementsList = append(MeasurementsList, Measurement{Host: v})
 	}
-	bar := pb.New(len(MeasurementsList))
+
+	listSize := len(MeasurementsList)
+	bar := pb.New(listSize)
 
 	if progressBar {
-		bar = pb.StartNew(len(MeasurementsList)).Prefix("Checking hosts")
+		bar = pb.StartNew(listSize).Prefix("Checking hosts")
 		bar.ShowTimeLeft = false
 	}
 	if len(dnsResolver) != 0 {
@@ -146,7 +147,9 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 	}
 
 	for k, v := range MeasurementsList {
-		//fmt.Println("Measuring ", v.Host)
+		if verbose {
+			fmt.Printf("Measuring [%d/%d] %s\n", k+1, listSize, v.Host)
+		}
 		if progressBar {
 			bar.Increment()
 		}
@@ -155,18 +158,20 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 		if err != nil {
 			fmt.Println("url.Parse:", err)
 		}
-		//fmt.Println("+++++", host.Hostname())
 		if dnsWarmUp {
-			//fmt.Println("Warming up DNS")
-			//before := time.Now()
-			_, err := net.LookupHost(v.Host)
-			//after := time.Now()
+			if verbose {
+				fmt.Printf("\tWarming up DNS for %s\n", v.Host)
+			}
+			before := time.Now()
+			addrs, err := net.LookupHost(v.Host)
+			diff := time.Since(before)
 			if err != nil {
 				fmt.Println(err)
 				continue
 			}
-			// diff := after.Sub(before)
-			//fmt.Println(addrs, diff)
+			if verbose {
+				fmt.Printf("\tResolving %s to %s took %s\n", v.Host, addrs, diff)
+			}
 		}
 		for i := 0; i < count; i++ {
 			switch ccmd.Name() {
@@ -190,8 +195,11 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 	if progressBar {
 		bar.FinishPrint("Closest hosts:")
 	}
+	if verbose {
+		fmt.Println("Closest hosts:")
+	}
 	for _, v := range sortByDuration(MeasurementsList) {
-		fmt.Println(v.Host, v.Duration)
+		fmt.Printf("\t%s %s\n", v.Host, v.Duration)
 	}
 
 }
