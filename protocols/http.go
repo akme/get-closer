@@ -10,10 +10,15 @@ import (
 )
 
 // HTTPPing measures latency for HTTP request
-func HTTPPing(target string) time.Duration {
+func HTTPPing(target string, sslEnable bool) time.Duration {
 	//var resp *http.Response
 	var body io.Reader
-	target = "http://" + target // dirty fix =(
+	scheme := "http://"
+	if sslEnable {
+		scheme = "https://"
+	}
+
+	target = scheme + target
 	req, err := http.NewRequest("GET", target, body)
 	req.Header.Set(http.CanonicalHeaderKey("User-Agent"), "get-closer")
 	if err != nil {

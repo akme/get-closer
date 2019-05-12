@@ -30,6 +30,7 @@ var (
 	progressBar bool
 	count       int
 	verbose     bool
+	sslEnable   bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -124,7 +125,7 @@ func (m Measurements) Less(i, j int) bool { return m[i].Duration.Avg() > m[j].Du
 func (m Measurements) Swap(i, j int)      { m[i], m[j] = m[j], m[i] }
 
 func startMeasurements(ccmd *cobra.Command, args []string) {
-
+	fmt.Println(sslEnable)
 	hostsList, err := loaders.LoadHosts(hostsFile)
 	if err != nil {
 		fmt.Println(err)
@@ -170,7 +171,7 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 		for i := 0; i < count; i++ {
 			switch ccmd.Name() {
 			case "http":
-				duration = protocols.HTTPPing(v.Host)
+				duration = protocols.HTTPPing(v.Host, sslEnable)
 			case "dns":
 				duration = protocols.DNSPing(v.Host)
 			case "icmp":
