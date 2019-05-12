@@ -1,4 +1,4 @@
-https://ya.ru
-https://google.com
-https://www.bing.com
-https://www.yahoo.com
+ya.ru
+google.com
+www.bing.com
+www.yahoo.com
