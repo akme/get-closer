@@ -203,6 +203,9 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 	if verbose {
 		fmt.Println("Closest hosts:")
 	}
+	if limit == 0 {
+		limit = uint(listSize)
+	}
 	sortedList := sortByDuration(MeasurementsList)
 	for _, v := range sortedList[:limit] {
 		fmt.Printf("\t%s %s\n", v.Host, v.Duration)
