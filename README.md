@@ -51,6 +51,10 @@ Use "get-closer [command] --help" for more information about a command.
 ## Examples
 This repo contains hosts.txt and dnsresolvers.txt as an example of hosts file that you can use for test runs.
 ### ICMP
+On Linux, you need to enable "unprivileged" mode:
+```
+sudo sysctl -w net.ipv4.ping_group_range="0   2147483647"
+```
 ```
 get closer ping -f hosts.txt
 ```
