@@ -38,13 +38,11 @@ func HTTPPing(target string, sslEnable bool) time.Duration {
 	client := http.Client{Timeout: timeout}
 	_, err = client.Do(req)
 
-	endAt := time.Now()
+	duration := time.Since(startAt)
 
 	if err != nil {
 		fmt.Println(err)
-		return 0
 	}
-	duration := endAt.UnixNano() - startAt.UnixNano()
 
 	return time.Duration(duration)
 }

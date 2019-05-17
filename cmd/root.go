@@ -192,6 +192,9 @@ func startMeasurements(ccmd *cobra.Command, args []string) {
 			if err != nil {
 				fmt.Println(err)
 			}
+			if verbose {
+				fmt.Printf("\t%s measurement for %s took %s\n", ccmd.Name(), v.Host, duration)
+			}
 			MeasurementsList[k].Duration = append(MeasurementsList[k].Duration, duration)
 
 			time.Sleep(time.Duration(delay) * time.Second)
@@ -229,6 +232,9 @@ func (p durationSlice) Avg() time.Duration {
 	var avg int64
 	for i := 0; i < p.Len(); i++ {
 		avg += int64(p[i])
+	}
+	if p.Len() == 0 {
+		return time.Duration(0)
 	}
 	return time.Duration(avg / int64(p.Len()))
 }
