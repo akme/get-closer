@@ -72,6 +72,9 @@ get-closer http -f hosts.txt
 get-closer dns -f hosts.txt
 ```
 
+## Publications
+* [Find the best API Endpoint for your EOS dApp](https://medium.com/@akme/find-the-best-api-endpoint-for-your-eos-dapp-7b7489cb6449?source=friends_link&sk=9edf5910202b6cc2701e4fc04c08eb31) [en]
+* [Выбираем ближайшие узлы в сети](https://habr.com/ru/post/451866/) [ru]
 
 ## Contributing
 
